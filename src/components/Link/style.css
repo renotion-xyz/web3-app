@@ -1,0 +1,8 @@
+.rnt-link {
+  text-decoration: underline;
+  color: #bbb;
+}
+
+.rnt-link:hover {
+  color: #777;
+}

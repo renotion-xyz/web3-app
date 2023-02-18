@@ -1,0 +1,15 @@
+/* Overriding bulma defaults */
+.box {
+  background-color: #333;
+  border-radius: 12px;
+  color: white;
+}
+.label {
+  color: white;
+}
+.content h1 {
+  color: white;
+}
+.help {
+  color: #bbb;
+}

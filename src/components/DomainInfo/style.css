@@ -1,0 +1,23 @@
+.domain-info {
+  background-color: rgba(30, 30, 30, 0.8);
+  padding: 12px;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px
+}
+
+.domain-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.domain-info-row-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
