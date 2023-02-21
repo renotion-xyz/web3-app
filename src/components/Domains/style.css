@@ -1,0 +1,15 @@
+.loading-indicator {
+  text-align: center;
+}
+
+.pages-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pages-refresh-button {
+  border: 0;
+  background: none;
+  color: white;
+}

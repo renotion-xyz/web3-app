@@ -1,11 +1,12 @@
 import './style.css';
 import { Block, Box, Button, Form, Heading } from 'react-bulma-components';
 import { useEffect, useState } from 'react';
-import { useProvider, useSigner } from 'wagmi';
+import { useAccount, useProvider, useSigner } from 'wagmi';
 import { getMinPrice, registerPage } from '../../web3/renotion';
 import { pageIdFromUrl } from '../../utils';
 import { ethers, ContractTransaction } from 'ethers';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
+import { useDomains } from '../../contexts/domains';
 
 async function register(domain: string, pageUrl: string, price: string, signer: ethers.Signer): Promise<ContractTransaction> {
   const page = pageIdFromUrl(pageUrl);
@@ -24,7 +25,7 @@ interface ValidatedInput {
 }
 
 interface RegisterProps {
-  setNeedsReloadPages: () => void;
+  onFinished: () => void;
 }
 
 export default function Register (props: RegisterProps) {
@@ -39,9 +40,11 @@ export default function Register (props: RegisterProps) {
   });
   const [minPrice, setMinPrice] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { setNeedsReloadDomains } = useDomains();
 
   const provider = useProvider();
   const { data: signer } = useSigner();
+  const { address } = useAccount();
   const addRecentTransaction = useAddRecentTransaction();
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function Register (props: RegisterProps) {
   }, [provider]);
 
   function tryRegister() {
-    if (!signer) {
+    if (!signer || !address) {
       alert('Wallet is not connected');
       return;
     }
@@ -78,11 +81,12 @@ export default function Register (props: RegisterProps) {
         setPage({ value: '', isValid: false });
         setDomain({ value: '', isValid: false });
         setIsProcessing(false);
-        props.setNeedsReloadPages();
+        setNeedsReloadDomains(address);
+        props.onFinished();
       })
       .catch((err) => {
         if (err.code !== 4001) { // rejected
-          alert(err.message);
+          alert(err.reason.replace(/execution reverted:/i, '').trim());
         }
         setIsProcessing(false);
       })
@@ -195,6 +199,7 @@ export default function Register (props: RegisterProps) {
           onClick={() => tryRegister()}
           disabled={!(domain.isValid && page.isValid) || isProcessing}
           loading={isProcessing}
+          rounded={true}
         >
           <b>Register</b>
         </Button>

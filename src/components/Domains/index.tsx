@@ -1,0 +1,106 @@
+import './style.css';
+import { Block, Box, Button, Heading, Modal, Notification } from 'react-bulma-components';
+import { useAccount } from 'wagmi';
+import { InfinitySpin } from 'react-loader-spinner';
+import DomainRow from '../DomainRow';
+import { useDomains } from '../../contexts/domains';
+import { MdRefresh } from 'react-icons/md';
+import Register from '../Register';
+import { useState } from 'react';
+
+export default function Domains() {
+  const { address, status } = useAccount();
+  const { domains, setNeedsReloadDomains } = useDomains();
+  const [showModal, setShowModal] = useState(false);
+
+  function onRefresh() {
+    if (!address) {
+      return;
+    }
+
+    setNeedsReloadDomains(address);
+  }
+
+  return (
+    <Box>
+      <Heading size={4} renderAs='div'>
+        <div className='pages-header'>
+          <div>
+            <span>My pages</span>
+            {
+              status === 'connected'
+              && address
+              && (
+                <button className='pages-refresh-button' onClick={onRefresh}>
+                  <MdRefresh size='1.5em' />
+                </button>
+              )
+            }
+          </div>
+          {
+            status === 'connected'
+            && address
+            && (
+              <Button
+                size='small'
+                color='success'
+                rounded={true}
+                onClick={() => setShowModal(true)}
+              >
+                <b>Register</b>
+              </Button>
+            )
+          }
+        </div>
+      </Heading>
+      {
+        status !== 'connected'
+        && (
+          <Notification light={true} color={'info'}>
+            Connect wallet to load your registered pages
+          </Notification>
+        )
+      }
+      {
+        status === 'connected'
+        && !domains
+        && (
+          <Block className='loading-indicator'>
+            <InfinitySpin
+              width='200'
+              color="#fff"
+            />
+          </Block>
+        )
+      }
+      {
+        status === 'connected'
+        && domains && domains.length === 0
+        && (
+          <Notification light={true} color={'info'}>
+            You don't have any pages registered
+          </Notification>
+        )
+      }
+      {
+        status === 'connected'
+        && domains && domains.length > 0
+        && (
+          domains.map((domain, idx) => (
+            <DomainRow domain={domain} key={`d-${domain.hostname}-${idx}`} />
+          ))
+        )
+      }
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        closeOnEsc={true}
+        closeOnBlur={true}
+      >
+        <Modal.Content>
+          <Register onFinished={() => setShowModal(false)} />
+        </Modal.Content>
+      </Modal>
+    </Box>
+  );
+}

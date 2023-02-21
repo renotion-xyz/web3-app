@@ -1,9 +1,9 @@
 import './style.css';
-import { Domain, OwnershipStatus, SSLVerificationStatus } from '../../api';
 import { Block, Box, Content, Heading, Tag, Notification, Table } from 'react-bulma-components';
 import Link from '../Link';
 import { cnameFromHostname, ownershipStatusInfo, sslStatusInfo } from '../../utils';
 import ClickToCopy from '../ClickToCopy';
+import { Domain, OwnershipStatus, SSLVerificationStatus } from '../../types/domain';
 
 interface DomainDetailsProps {
   domain: Domain;

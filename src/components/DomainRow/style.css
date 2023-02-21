@@ -6,7 +6,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px
+  gap: 12px;
+
+  cursor: pointer;
 }
 
 .domain-info-row {
@@ -20,4 +22,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.domain-info-row-action {
+  color: crimson;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 }

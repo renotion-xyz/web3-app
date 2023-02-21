@@ -1,13 +1,14 @@
 import './style.css';
 import { Content, Modal, Tag } from 'react-bulma-components';
-import { Domain, SSLVerificationStatus, OwnershipStatus } from '../../api';
 import { FaChevronRight } from 'react-icons/fa';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useState } from 'react';
 import DomainDetails from '../DomainDetails';
 import Link from '../Link';
 import { ownershipStatusInfo, sslStatusInfo } from '../../utils';
+import { Domain, OwnershipStatus, SSLVerificationStatus } from '../../types/domain';
 
-interface DomainInfoProps {
+interface DomainRowProps {
   domain: Domain;
 }
 
@@ -39,7 +40,7 @@ const OwnershipTag = (props: OwnershipTagProps) => {
   );
 };
 
-export default function DomainInfo(props: DomainInfoProps) {
+export default function DomainRow(props: DomainRowProps) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -64,6 +65,18 @@ export default function DomainInfo(props: DomainInfoProps) {
             </div>
             <SSLTag status={props.domain.sslStatus} />
           </div>
+          {
+            (
+              props.domain.ownershipStatus !== OwnershipStatus.Active
+              || props.domain.sslStatus !== SSLVerificationStatus.Active
+            )
+            && (
+              <div className='domain-info-row-action'>
+                <HiOutlineExclamationCircle />
+                <span>Action needed</span>
+              </div>
+            )
+          }
         </div>
         <div>
           <FaChevronRight color='rgba(128, 128, 128, 0.5)' />

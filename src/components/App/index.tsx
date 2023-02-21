@@ -4,20 +4,19 @@ import { chains, wagmiClient } from '../../web3/wallet';
 import { WagmiConfig } from 'wagmi';
 import { polygon } from 'wagmi/chains';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import Register from '../Register';
-import Pages from '../Pages';
+import Domains from '../Domains';
 import Header from '../Header';
-import { useState } from 'react';
-
+import { DomainsProvider } from '../../contexts/domains';
 
 const RAINBOW_THEME = darkTheme({
   fontStack: 'system',
-  overlayBlur: 'small'
+  overlayBlur: 'small',
+  borderRadius: 'large',
 });
 
-export default function App() {
-  const [pagesUpdateTs, setPagesUpdateTs] = useState(0);
+RAINBOW_THEME.radii.connectButton = '32px';
 
+export default function App() {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
@@ -29,15 +28,16 @@ export default function App() {
           appName: 'Renotion',
         }}
       >
-        <Section>
-          <Container style={{maxWidth: '600px'}}>
-            <Header />
-            <Content>
-              <Register setNeedsReloadPages={() => setPagesUpdateTs(Date.now())} />
-              <Pages updateTs={pagesUpdateTs} />
-            </Content>
-          </Container>
-        </Section>
+        <DomainsProvider>
+          <Section>
+            <Container style={{maxWidth: '600px'}}>
+              <Header />
+              <Content>
+                <Domains />
+              </Content>
+            </Container>
+          </Section>
+        </DomainsProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
