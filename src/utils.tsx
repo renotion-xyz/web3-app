@@ -41,5 +41,5 @@ export function cnameFromHostname(hostname: string): string {
 
 export function pageIdFromUrl(pageUrl: string): string {
   const components = pageUrl.split('-');
-  return components.pop()!;
+  return components.pop()!.slice(-32);
 }

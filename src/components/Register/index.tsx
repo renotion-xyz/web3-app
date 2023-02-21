@@ -13,10 +13,33 @@ async function register(domain: string, pageUrl: string, price: string, signer: 
   return tx;
 }
 
-export default function Register () {
-  const [domain, setDomain] = useState('');
-  const [page, setPage] = useState('');
+const DOMAIN_REGEX = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/;
+const PAGE_REGEX = /^https:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\/[\w-]+(?:\w{32})$/;
+
+interface ValidatedInput {
+  value: string;
+  color?: string;
+  help?: string;
+  isValid: boolean;
+}
+
+interface RegisterProps {
+  setNeedsReloadPages: () => void;
+}
+
+export default function Register (props: RegisterProps) {
+  const [domain, setDomain] = useState<ValidatedInput>({
+    value: '',
+    isValid: false
+  });
+  const [page, setPage] = useState<ValidatedInput>({
+    value: '',
+    help: 'Page should be publicly shared',
+    isValid: false
+  });
   const [minPrice, setMinPrice] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const provider = useProvider();
   const { data: signer } = useSigner();
   const addRecentTransaction = useAddRecentTransaction();
@@ -28,21 +51,93 @@ export default function Register () {
 
   function tryRegister() {
     if (!signer) {
+      alert('Wallet is not connected');
+      return;
+    }
+    if (!domain.isValid) {
+      alert('Domain is not valid');
+      return;
+    }
+    if (!page.isValid) {
+      alert('Page is not valid');
       return;
     }
 
-    register(domain, page, minPrice, signer)
+    setIsProcessing(true);
+
+    register(domain.value, page.value, minPrice, signer)
       .then((tx) => {
         addRecentTransaction({
           hash: tx.hash!,
-          description: 'Page registration'
+          description: 'Page registration',
+          confirmations: 2
         });
-        // TODO: set disabled and loading
-        return tx.wait();
+        return tx.wait(2);
       })
       .then(() => {
-        // TODO: set enabled cleared and not loading
-      });
+        setPage({ value: '', isValid: false });
+        setDomain({ value: '', isValid: false });
+        setIsProcessing(false);
+        props.setNeedsReloadPages();
+      })
+      .catch((err) => {
+        if (err.code !== 4001) { // rejected
+          alert(err.message);
+        }
+        setIsProcessing(false);
+      })
+  }
+
+  function onChangeDomain(event: React.ChangeEvent<HTMLInputElement>) {
+    let { value } = event.target;
+    value = value.toLowerCase();
+
+    let color: string | undefined = undefined;
+    let help: string | undefined = undefined;
+    let isValid = false;
+    if (value.length > 0) {
+      if (value.match(DOMAIN_REGEX)) {
+        color = 'success';
+        isValid = true;
+      } else {
+        color = 'danger';
+        help = 'Please enter a valid domain name, e.g. abc.example.com'
+      }
+    }
+
+    setDomain({
+      value,
+      color,
+      help,
+      isValid
+    });
+  }
+
+  function onChangePage(event: React.ChangeEvent<HTMLInputElement>) {
+    let { value } = event.target;
+    value = value.toLowerCase();
+
+    let color: string | undefined = undefined;
+    let help: string | undefined = undefined;
+    let isValid = false;
+    if (value.length > 0) {
+      if (value.match(PAGE_REGEX)) {
+        color = 'success';
+        isValid = true;
+      } else {
+        color = 'danger';
+        help = 'Please copy and page full Notion page link'
+      }
+    } else {
+      help = 'Page should be publicly shared';
+    }
+
+    setPage({
+      value,
+      color,
+      help,
+      isValid
+    });
   }
 
   return (
@@ -54,30 +149,53 @@ export default function Register () {
         <Form.Label>Domain</Form.Label>
         <Form.Control>
           <Form.Input
-            value={domain}
+            color={domain.color}
+            value={domain.value ?? ''}
             placeholder={'ethereum.org'}
-            onChange={(e) => {
-              return setDomain(e.target.value);
-            }}
+            onChange={onChangeDomain}
+            disabled={isProcessing}
           />
         </Form.Control>
-        {/* <Form.Help color="success">This username is available</Form.Help> */}
+        {
+          domain.help
+          && (
+            <Form.Help
+              color={domain.color}
+            >
+              {domain.help}
+            </Form.Help>
+          )
+        }
       </Form.Field>
       <Form.Field>
         <Form.Label>Notion Page URL</Form.Label>
         <Form.Control>
           <Form.Input
-            value={page}
+            color={page.color}
+            value={page.value ?? ''}
             placeholder={'https://example.notion.site/Hello-abc1337def'}
-            onChange={(e) => {
-              return setPage(e.target.value);
-            }}
+            onChange={onChangePage}
+            disabled={isProcessing}
           />
         </Form.Control>
-        <Form.Help>Page should be publicly shared</Form.Help>
+        {
+          page.help
+          && (
+            <Form.Help
+              color={page.color}
+            >
+              {page.help}
+            </Form.Help>
+          )
+        }
       </Form.Field>
       <Block className='register-button-price-container'>
-        <Button color={'primary'} onClick={() => tryRegister()}>
+        <Button
+          color={'primary'}
+          onClick={() => tryRegister()}
+          disabled={!(domain.isValid && page.isValid) || isProcessing}
+          loading={isProcessing}
+        >
           <b>Register</b>
         </Button>
         {

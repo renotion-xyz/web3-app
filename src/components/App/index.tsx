@@ -7,6 +7,7 @@ import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import Register from '../Register';
 import Pages from '../Pages';
 import Header from '../Header';
+import { useState } from 'react';
 
 
 const RAINBOW_THEME = darkTheme({
@@ -15,6 +16,8 @@ const RAINBOW_THEME = darkTheme({
 });
 
 export default function App() {
+  const [pagesUpdateTs, setPagesUpdateTs] = useState(0);
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
@@ -30,8 +33,8 @@ export default function App() {
           <Container style={{maxWidth: '600px'}}>
             <Header />
             <Content>
-              <Register />
-              <Pages />
+              <Register setNeedsReloadPages={() => setPagesUpdateTs(Date.now())} />
+              <Pages updateTs={pagesUpdateTs} />
             </Content>
           </Container>
         </Section>

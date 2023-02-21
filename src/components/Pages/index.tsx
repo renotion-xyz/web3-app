@@ -6,7 +6,11 @@ import { listAllDomains, Domain } from '../../api';
 import { InfinitySpin } from 'react-loader-spinner';
 import DomainInfo from '../DomainInfo';
 
-export default function Pages() {
+interface PagesProps {
+  updateTs: number;
+}
+
+export default function Pages(props: PagesProps) {
   const { address, status } = useAccount();
   const [domains, setDomains] = useState<Domain[]>();
 
@@ -16,7 +20,7 @@ export default function Pages() {
     }
     listAllDomains(address)
       .then(setDomains);
-  }, [address, status])
+  }, [address, status, props.updateTs])
 
   return (
     <Box>
@@ -56,7 +60,7 @@ export default function Pages() {
         status === 'connected'
         && domains && domains.length > 0
         && (
-          domains.concat(domains).map((domain, idx) => (
+          domains.map((domain, idx) => (
             <DomainInfo domain={domain} key={`d-${domain.hostname}-${idx}`} />
           ))
         )
