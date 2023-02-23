@@ -14,14 +14,26 @@
 .domain-info-row {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: stretch;
   flex-grow: 1;
 }
 
 .domain-info-row-content {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.domain-info-row-content-inner {
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
+}
+
+.domain-info-row-content-tags {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .domain-info-row-action {
@@ -30,4 +42,12 @@
   flex-direction: row;
   align-items: center;
   gap: 4px;
+}
+
+@media only screen and (max-width: 400px) {
+  .domain-info-row-content-tags {
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+  }
 }

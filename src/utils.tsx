@@ -43,3 +43,11 @@ export function pageIdFromUrl(pageUrl: string): string {
   const components = pageUrl.split('-');
   return components.pop()!.slice(-32);
 }
+
+export function shorten(text: string, maxLength: number = 12): string {
+  if (text.length < maxLength) {
+    return text;
+  } else {
+    return `${text.slice(0, maxLength/2)}...${text.slice(-maxLength/2)}`;
+  }
+}

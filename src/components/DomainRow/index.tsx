@@ -5,7 +5,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useState } from 'react';
 import DomainDetails from '../DomainDetails';
 import Link from '../Link';
-import { ownershipStatusInfo, sslStatusInfo } from '../../utils';
+import { ownershipStatusInfo, shorten, sslStatusInfo } from '../../utils';
 import { Domain, OwnershipStatus, SSLVerificationStatus } from '../../types/domain';
 
 interface DomainRowProps {
@@ -48,22 +48,26 @@ export default function DomainRow(props: DomainRowProps) {
       <div className='domain-info' onClick={() => setShowModal(!showModal)}>
         <div className='domain-info-row'>
           <div className='domain-info-row-content'>
-            <div>
-              <Link
-                title={props.domain.hostname}
-                url={`https://${props.domain.hostname}`}
-              />
+            <div className='domain-info-row-content-inner'>
+              <div>
+                <Link
+                  title={props.domain.hostname}
+                  url={`https://${props.domain.hostname}`}
+                />
+              </div>
             </div>
-            <OwnershipTag status={props.domain.ownershipStatus} />
-          </div>
-          <div className='domain-info-row-content'>
-            <div>
-              <Link
-                title={props.domain.page}
-                url={`https://notion.so/${props.domain.page}`}
-              />
+            <div className='domain-info-row-content-inner'>
+              <div>
+                <Link
+                  title={shorten(props.domain.page, 16)}
+                  url={`https://notion.so/${props.domain.page}`}
+                />
+              </div>
             </div>
-            <SSLTag status={props.domain.sslStatus} />
+            <div className='domain-info-row-content-tags'>
+              <OwnershipTag status={props.domain.ownershipStatus} />
+              <SSLTag status={props.domain.sslStatus} />
+            </div>
           </div>
           {
             (

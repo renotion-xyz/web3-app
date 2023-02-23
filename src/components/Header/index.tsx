@@ -8,7 +8,7 @@ export default function Header() {
     <Content className='header'>
       <div className='renotion-title-logo'>
         <img src={logo} alt='Renotion' className='renotion-logo' />
-        <Heading style={{margin: '0 12px'}} size={3}>
+        <Heading style={{margin: '0 12px'}} className='renotion-title-text' size={3}>
           <span className='renotion-title-color'>
             Re
           </span>

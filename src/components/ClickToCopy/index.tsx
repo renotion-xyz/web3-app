@@ -3,6 +3,7 @@ import { MdContentCopy } from 'react-icons/md';
 
 interface ClickToCopyProps {
   text: string;
+  caption?: string;
 }
 
 function copy(text: string) {
@@ -12,7 +13,7 @@ function copy(text: string) {
 export default function ClickToCopy(props: ClickToCopyProps) {
   return (
     <div className='clickToCopy-container' onClick={() => copy(props.text)}>
-      <span>{props.text}</span>
+      <span>{props.caption ?? props.text}</span>
       <MdContentCopy />
     </div>
   );

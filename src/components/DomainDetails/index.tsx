@@ -1,9 +1,10 @@
 import './style.css';
 import { Block, Box, Content, Heading, Tag, Notification, Table } from 'react-bulma-components';
 import Link from '../Link';
-import { cnameFromHostname, ownershipStatusInfo, sslStatusInfo } from '../../utils';
+import { cnameFromHostname, ownershipStatusInfo, shorten, sslStatusInfo } from '../../utils';
 import ClickToCopy from '../ClickToCopy';
 import { Domain, OwnershipStatus, SSLVerificationStatus } from '../../types/domain';
+import { useEffect, useState } from 'react';
 
 interface DomainDetailsProps {
   domain: Domain;
@@ -13,6 +14,26 @@ export default function DomainDetails(props: DomainDetailsProps) {
   const sslStatus = sslStatusInfo(props.domain.sslStatus);
   const ownershipStatus = ownershipStatusInfo(props.domain.ownershipStatus);
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
   return (
     <Box>
       <Content>
@@ -20,7 +41,11 @@ export default function DomainDetails(props: DomainDetailsProps) {
         <Block>
           Notion page: &nbsp;
           <Link
-            title={props.domain.page}
+            title={
+              windowSize.width < 375
+              ? shorten(props.domain.page, 20)
+              : props.domain.page
+            }
             url={`https://notion.so/${props.domain.page}`}
           />
         </Block>
@@ -82,11 +107,29 @@ export default function DomainDetails(props: DomainDetailsProps) {
                       </tr>
                       <tr>
                         <td><b>Name</b></td>
-                        <td><ClickToCopy text={props.domain.txtRecordDetails.name}/></td>
+                        <td>
+                          <ClickToCopy
+                            text={props.domain.txtRecordDetails.name}
+                            caption={
+                              windowSize.width < 400
+                              ? shorten(props.domain.txtRecordDetails.name, 20)
+                              : props.domain.txtRecordDetails.name
+                            }
+                          />
+                        </td>
                       </tr>
                       <tr>
                         <td><b>Value</b></td>
-                        <td><ClickToCopy text={props.domain.txtRecordDetails.value}/></td>
+                        <td>
+                          <ClickToCopy
+                            text={props.domain.txtRecordDetails.value}
+                            caption={
+                              windowSize.width < 400
+                              ? shorten(props.domain.txtRecordDetails.value, 20)
+                              : props.domain.txtRecordDetails.value
+                            }
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </Table>
