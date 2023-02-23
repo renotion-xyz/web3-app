@@ -7,6 +7,10 @@ import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import Domains from '../Domains';
 import Header from '../Header';
 import { DomainsProvider } from '../../contexts/domains';
+import Showcase from '../Showcase';
+import Intro from '../Intro';
+import Info from '../Contact';
+import { References } from '../References';
 
 const RAINBOW_THEME = darkTheme({
   fontStack: 'system',
@@ -33,7 +37,11 @@ export default function App() {
             <Container style={{maxWidth: '600px'}}>
               <Header />
               <Content>
+                <Intro />
                 <Domains />
+                <Showcase />
+                <Info />
+                <References />
               </Content>
             </Container>
           </Section>

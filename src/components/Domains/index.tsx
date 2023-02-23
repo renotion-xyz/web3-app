@@ -68,7 +68,7 @@ export default function Domains() {
           <Block className='loading-indicator'>
             <InfinitySpin
               width='200'
-              color="#fff"
+              color='#fff'
             />
           </Block>
         )

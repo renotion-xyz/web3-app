@@ -79,6 +79,23 @@ export default function DomainDetails(props: DomainDetailsProps) {
                     </tr>
                   </tbody>
                 </Table>
+                <div>
+                  How to: {' '}
+                  <Link
+                    title='GoDaddy'
+                    url='https://godaddy.com/help/add-a-cname-record-19236'
+                    />
+                  {' '}
+                  <Link
+                    title='Namecheap'
+                    url='https://www.namecheap.com/support/knowledgebase/article.aspx/9646/2237/how-to-create-a-cname-record-for-your-domain/'
+                  />
+                  {' '}
+                  <Link
+                    title='Name.com'
+                    url='https://www.name.com/support/articles/115004895548-adding-a-cname-record'
+                  />
+                </div>
               </Block>
             )
           }
@@ -133,6 +150,23 @@ export default function DomainDetails(props: DomainDetailsProps) {
                       </tr>
                     </tbody>
                   </Table>
+                  <div>
+                    How to: {' '}
+                    <Link
+                      title='GoDaddy'
+                      url='https://godaddy.com/help/add-a-txt-record-19232'
+                    />
+                    {' '}
+                    <Link
+                      title='Namecheap'
+                      url='https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdkimdmarc-records-for-my-domain/'
+                    />
+                    {' '}
+                    <Link
+                      title='Name.com'
+                      url='https://www.name.com/support/articles/115004972547-adding-a-txt-record'
+                    />
+                  </div>
                 </Block>
               )
               : (

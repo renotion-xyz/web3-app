@@ -19,7 +19,7 @@ interface SSLTagProps {
 const SSLTag = (props: SSLTagProps) => {
   const { color, text } = sslStatusInfo(props.status);
   return (
-    <Tag.Group hasAddons>
+    <Tag.Group hasAddons style={{marginBottom: 0}}>
       <Tag color={'dark'}>TLS</Tag>
       <Tag color={color}>{text}</Tag>
     </Tag.Group>
@@ -33,7 +33,7 @@ interface OwnershipTagProps {
 const OwnershipTag = (props: OwnershipTagProps) => {
   const { color, text } = ownershipStatusInfo(props.status);
   return (
-    <Tag.Group hasAddons>
+    <Tag.Group hasAddons style={{marginBottom: 0}}>
       <Tag color={'dark'}>Ownership</Tag>
       <Tag color={color}>{text}</Tag>
     </Tag.Group>

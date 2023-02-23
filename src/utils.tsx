@@ -1,4 +1,4 @@
-import { OwnershipStatus, SSLVerificationStatus } from "./types/domain";
+import { OwnershipStatus, SSLVerificationStatus } from './types/domain';
 
 export function sslStatusInfo(status: SSLVerificationStatus): { color: string, text: string } {
   switch (status) {

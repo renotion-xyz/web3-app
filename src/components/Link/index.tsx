@@ -10,8 +10,8 @@ export default function Link(props: LinkProps) {
     <a
       className='rnt-link'
       href={props.url}
-      target={'_blank'}
-      rel={'noreferrer'}
+      target='_blank'
+      rel='noreferrer'
     >
       {props.title}
     </a>
