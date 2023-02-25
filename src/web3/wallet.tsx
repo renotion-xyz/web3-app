@@ -11,17 +11,22 @@ import {
   braveWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { configureChains, createClient } from 'wagmi';
-import { polygon, polygonMumbai } from 'wagmi/chains';
+import { polygon } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
+const ALCHEMY_KEY = process.env.REACT_APP_ALCHEMY_KEY;
+
+const providers = [
+  publicProvider()
+];
+if (ALCHEMY_KEY) {
+  providers.unshift(alchemyProvider({ apiKey: ALCHEMY_KEY }));
+}
+
 export const { chains, provider } = configureChains(
-  // [polygon],
-  [polygonMumbai],
-  [
-    // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY! }),
-    publicProvider()
-  ]
+  [polygon],
+  providers
 );
 
 const connectors = connectorsForWallets([

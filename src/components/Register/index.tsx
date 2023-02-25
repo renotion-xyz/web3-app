@@ -1,11 +1,11 @@
 import './style.css';
 import { Block, Box, Button, Form, Heading } from 'react-bulma-components';
+import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 import { useAccount, useProvider, useSigner } from 'wagmi';
 import { getMinPrice, registerPage } from '../../web3/renotion';
 import { pageIdFromUrl } from '../../utils';
 import { ethers, ContractTransaction } from 'ethers';
-import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useDomains } from '../../contexts/domains';
 
 async function register(domain: string, pageUrl: string, price: string, signer: ethers.Signer): Promise<ContractTransaction> {

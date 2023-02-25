@@ -1,12 +1,12 @@
 import './style.css';
+import { useState } from 'react';
 import { Block, Box, Button, Heading, Modal, Notification } from 'react-bulma-components';
 import { useAccount } from 'wagmi';
 import { InfinitySpin } from 'react-loader-spinner';
+import { MdRefresh } from 'react-icons/md';
 import DomainRow from '../DomainRow';
 import { useDomains } from '../../contexts/domains';
-import { MdRefresh } from 'react-icons/md';
 import Register from '../Register';
-import { useState } from 'react';
 
 export default function Domains() {
   const { address, status } = useAccount();

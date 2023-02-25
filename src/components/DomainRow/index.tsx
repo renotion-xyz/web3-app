@@ -1,8 +1,8 @@
 import './style.css';
+import { useState } from 'react';
 import { Content, Modal, Tag } from 'react-bulma-components';
 import { FaChevronRight } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { useState } from 'react';
 import DomainDetails from '../DomainDetails';
 import Link from '../Link';
 import { ownershipStatusInfo, shorten, sslStatusInfo } from '../../utils';

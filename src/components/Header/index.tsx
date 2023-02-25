@@ -1,7 +1,7 @@
 import './style.css';
 import { Content, Heading } from 'react-bulma-components';
-import logo from '../../assets/logo.png';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import logo from '../../assets/logo.png';
 
 export default function Header() {
   return (

@@ -4,7 +4,7 @@ import RenotionAbi from '../artifacts/Renotion.abi.json';
 type Provider = ethers.providers.Provider;
 type Signer = ethers.Signer;
 
-const RENOTION_CONTRACT = process.env.REACT_APP_RENOTION_CONTRACT!;
+const RENOTION_CONTRACT = process.env.REACT_APP_RENOTION_CONTRACT as string;
 
 export async function getMinPrice(provider: Provider): Promise<string> {
   const contract = new ethers.Contract(RENOTION_CONTRACT, RenotionAbi, provider);
