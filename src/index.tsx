@@ -5,6 +5,10 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
+// Workaround for webpack v5
+// @see https://docs.cloud.coinbase.com/wallet-sdk/docs/web3-react#a-nametroubleshootingatroubleshooting
+window.Buffer = window.Buffer || require('buffer').Buffer;
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
