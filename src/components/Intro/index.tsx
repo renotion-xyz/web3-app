@@ -14,7 +14,7 @@ export default function Intro() {
       <Block>
         This way,<br/>
         <i><b>https://example.notion.site/</b>Hello-World-f589ad99d9354d....</i>
-        becomes <i><b>https://example.com/</b></i>
+        {' '}becomes{' '}<i><b>https://example.com/</b></i>
       </Block>
       <Block>
         This project uses global infrastructure of
