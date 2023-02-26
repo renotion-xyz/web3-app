@@ -13,9 +13,8 @@ export default function Intro() {
       </Block>
       <Block>
         This way,<br/>
-        <i><b>https://example.notion.site/</b>Hello-World-f589ad99d9354d....</i><br/>
-        becomes<br/>
-        <i><b>https://example.com/</b></i>
+        <i><b>https://example.notion.site/</b>Hello-World-f589ad99d9354d....</i>
+        becomes <i><b>https://example.com/</b></i>
       </Block>
       <Block>
         This project uses global infrastructure of
@@ -25,6 +24,11 @@ export default function Intro() {
         and
         {' '}
         <Link url='https://polygon.technology/' title='Polygon'/>.
+      </Block>
+      <Block>
+        Find more info, full source code, and the roadmap on Github:
+        {' '}
+        <Link url='https://github.com/renotion-xyz'/>
       </Block>
     </Box>
   )

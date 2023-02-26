@@ -2,7 +2,7 @@ import './style.css';
 
 interface LinkProps {
   url: string;
-  title: string;
+  title?: string;
 }
 
 export default function Link(props: LinkProps) {
@@ -13,7 +13,7 @@ export default function Link(props: LinkProps) {
       target='_blank'
       rel='noreferrer'
     >
-      {props.title}
+      {props.title ?? props.url}
     </a>
   );
 }
