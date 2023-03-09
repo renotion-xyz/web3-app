@@ -13,3 +13,12 @@
   background: none;
   color: white;
 }
+
+.pages-notification {
+  color: #BCABFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}

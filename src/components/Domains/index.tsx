@@ -1,12 +1,21 @@
 import './style.css';
-import { useState } from 'react';
-import { Block, Box, Button, Heading, Modal, Notification } from 'react-bulma-components';
+import { PropsWithChildren, useState } from 'react';
+import { Block, Box, Button, Heading, Modal } from 'react-bulma-components';
 import { useAccount } from 'wagmi';
 import { InfinitySpin } from 'react-loader-spinner';
 import { MdRefresh } from 'react-icons/md';
 import DomainRow from '../DomainRow';
 import { useDomains } from '../../contexts/domains';
 import Register from '../Register';
+import connectIcon from '../../assets/connect-icon.svg';
+
+function Notification(props: PropsWithChildren) {
+  return (
+    <div className='pages-notification'>
+      {props.children}
+    </div>
+  );
+}
 
 export default function Domains() {
   const { address, status } = useAccount();
@@ -43,11 +52,10 @@ export default function Domains() {
             && (
               <Button
                 size='small'
-                color='success'
-                rounded={true}
                 onClick={() => setShowModal(true)}
+                className='primary-button'
               >
-                <b>Register</b>
+                Register
               </Button>
             )
           }
@@ -56,7 +64,8 @@ export default function Domains() {
       {
         status !== 'connected'
         && (
-          <Notification light={true} color={'info'}>
+          <Notification>
+            <img src={connectIcon} width='45' height='45' />
             Connect wallet to load your registered pages
           </Notification>
         )
@@ -77,7 +86,7 @@ export default function Domains() {
         status === 'connected'
         && domains && domains.length === 0
         && (
-          <Notification light={true} color={'info'}>
+          <Notification>
             You don't have any pages registered
           </Notification>
         )

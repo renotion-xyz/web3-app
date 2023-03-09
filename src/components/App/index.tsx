@@ -16,9 +16,10 @@ const RAINBOW_THEME = darkTheme({
   fontStack: 'system',
   overlayBlur: 'small',
   borderRadius: 'large',
+  accentColor: '#8449F6'
 });
 
-RAINBOW_THEME.radii.connectButton = '32px';
+RAINBOW_THEME.radii.connectButton = '10px';
 
 export default function App() {
   return (

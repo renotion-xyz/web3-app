@@ -1,5 +1,5 @@
 html {
-  background-color: #222;
+  background-color: #000;
 }
 
 body {
@@ -12,7 +12,7 @@ body {
 
   height: 100vh;
   color: white;
-  background-color: #222;
+  background-color: #000;
 }
 
 code {

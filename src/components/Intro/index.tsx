@@ -1,10 +1,11 @@
+import './style.css';
 import { Block, Box } from 'react-bulma-components';
 import Link from '../Link';
 
 export default function Intro() {
   return (
-    <Box>
-      <Block>
+    <Block>
+      <Block className='intro-block-prominent'>
         <span className='renotion-title-color'>
           <b>Re</b>
         </span>
@@ -12,9 +13,14 @@ export default function Intro() {
         Notion publicly shared page to your custom domain.
       </Block>
       <Block>
-        This way,<br/>
-        <i><b>https://example.notion.site/</b>Hello-World-f589ad99d9354d....</i>
-        {' '}becomes{' '}<i><b>https://example.com/</b></i>
+        <span className='intro-block-prominent'>This way,</span>
+        <div className='intro-address-bar'>
+          https://example.notion.site/Hello-World-f589ad99d9354d....
+        </div>
+        <span className='intro-block-prominent'>💣 becomes...</span>
+        <div className='intro-address-bar'>
+          https://example.com/
+        </div>
       </Block>
       <Block>
         This project uses global infrastructure of
@@ -24,12 +30,11 @@ export default function Intro() {
         and
         {' '}
         <Link url='https://polygon.technology/' title='Polygon'/>.
-      </Block>
-      <Block>
+        <br/>
         Find more info, full source code, and the roadmap on Github:
         {' '}
         <Link url='https://github.com/renotion-xyz'/>
       </Block>
-    </Box>
+    </Block>
   )
 }

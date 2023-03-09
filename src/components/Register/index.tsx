@@ -195,11 +195,10 @@ export default function Register (props: RegisterProps) {
       </Form.Field>
       <Block className='register-button-price-container'>
         <Button
-          color={'primary'}
           onClick={() => tryRegister()}
           disabled={!(domain.isValid && page.isValid) || isProcessing}
           loading={isProcessing}
-          rounded={true}
+          className='primary-button'
         >
           <b>Register</b>
         </Button>

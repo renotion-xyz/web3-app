@@ -1,6 +1,6 @@
 /* Overriding bulma defaults */
 .box {
-  background-color: #333;
+  background-color: #35333A;
   border-radius: 12px;
   color: white;
 }
@@ -16,10 +16,32 @@
 .title {
   color: white;
 }
+.button {
+  border-radius: 10px !important;
+}
 
 @media only screen and (max-width: 500px) {
   .section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+/* Some common styles */
+.primary-button {
+  font-weight: 700;
+  color: #fff !important;
+  background-color: #8449F6;
+  border-color: #8449F6;
+}
+
+.primary-button:hover {
+  color: #fff;
+  border-color: #763ee6;
+  background-color: #763ee6;
+}
+
+.primary-button:disabled {
+  background-color: #4e2d91;
+  border-color: #4e2d91;
 }

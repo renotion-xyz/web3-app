@@ -1,0 +1,14 @@
+.intro-block-prominent {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.intro-address-bar {
+  display: block;
+  padding: 8px 16px;
+  border: 1px solid white;
+  border-radius: 30px;
+  margin: 8px 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
