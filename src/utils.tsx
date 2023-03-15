@@ -5,6 +5,7 @@ export function sslStatusInfo(status: SSLVerificationStatus): { color: string, t
     case SSLVerificationStatus.Active:
       return { text: 'Active', color: 'success' };
     case SSLVerificationStatus.Deleted:
+    case SSLVerificationStatus.ValidationTimedOut:
       return { text: 'Deleted', color: 'danger' };
     case SSLVerificationStatus.Initializing:
       return { text: 'Initializing', color: 'info' };

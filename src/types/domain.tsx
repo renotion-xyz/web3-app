@@ -6,18 +6,19 @@ export interface TXTRecordDetails {
 export enum OwnershipStatus {
   Pending = 'pending',
   Active  = 'active',
-    Moved   = 'moved',
-    Deleted = 'deleted',
-    Blocked = 'blocked',
+  Moved   = 'moved',
+  Deleted = 'deleted',
+  Blocked = 'blocked',
 }
 
 export enum SSLVerificationStatus {
   PendingValidation  = 'pending_validation',
-    PendingIssuance    = 'pending_issuance',
-    PendingDeployment  = 'pending_deployment',
-    Active             = 'active',
-    Deleted            = 'deleted',
-    Initializing       = 'initializing',
+  PendingIssuance    = 'pending_issuance',
+  PendingDeployment  = 'pending_deployment',
+  Active             = 'active',
+  Deleted            = 'deleted',
+  Initializing       = 'initializing',
+  ValidationTimedOut = 'validation_timed_out',
 }
 
 export interface Domain {
