@@ -3,7 +3,7 @@ import { WagmiConfig } from 'wagmi';
 import { polygon } from 'wagmi/chains';
 import { Content, Container, Section } from 'react-bulma-components';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import { chains, wagmiClient } from '../../web3/wallet';
+import { chains, wagmiConfig } from '../../web3/wallet';
 import Domains from '../Domains';
 import Header from '../Header';
 import { DomainsProvider } from '../../contexts/domains';
@@ -23,7 +23,7 @@ RAINBOW_THEME.radii.connectButton = '10px';
 
 export default function App() {
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         theme={RAINBOW_THEME}
         chains={chains}

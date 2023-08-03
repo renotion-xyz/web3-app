@@ -1,5 +1,5 @@
 import './style.css';
-import { Block, Box } from 'react-bulma-components';
+import { Block } from 'react-bulma-components';
 import Link from '../Link';
 
 export default function Intro() {

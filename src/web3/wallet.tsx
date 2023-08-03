@@ -1,49 +1,30 @@
 import '@rainbow-me/rainbowkit/styles.css';
 
-import {
-  connectorsForWallets,
-} from '@rainbow-me/rainbowkit';
-import {
-  metaMaskWallet,
-  walletConnectWallet,
-  coinbaseWallet,
-  rainbowWallet,
-  braveWallet,
-} from '@rainbow-me/rainbowkit/wallets';
-import { configureChains, createClient } from 'wagmi';
-import { polygon } from 'wagmi/chains';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig } from 'wagmi';
+import { polygon, polygonMumbai } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 const ALCHEMY_KEY = process.env.REACT_APP_ALCHEMY_KEY;
+const WC_PROJECT_ID = process.env.REACT_APP_WC_PROJECT_ID;
 
-const providers = [
-  publicProvider()
-];
-if (ALCHEMY_KEY) {
-  providers.unshift(alchemyProvider({ apiKey: ALCHEMY_KEY }));
-}
-
-export const { chains, provider } = configureChains(
-  [polygon],
-  providers
+export const { chains, publicClient } = configureChains(
+  [polygon, polygonMumbai],
+  [
+    publicProvider(),
+    alchemyProvider({ apiKey: ALCHEMY_KEY })
+  ]
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      braveWallet({ chains }),
-      metaMaskWallet({ chains }),
-      coinbaseWallet({ appName: 'Renotion', chains }),
-      rainbowWallet({ chains }),
-      walletConnectWallet({ chains }),
-    ]
-  }
-])
+const { connectors } = getDefaultWallets({
+  chains,
+  appName: 'Renotion',
+  projectId: WC_PROJECT_ID,
+});
 
-export const wagmiClient = createClient({
+export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider
+  publicClient,
 });

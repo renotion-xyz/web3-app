@@ -65,7 +65,7 @@ export default function Domains() {
         status !== 'connected'
         && (
           <Notification>
-            <img src={connectIcon} width='45' height='45' />
+            <img src={connectIcon} width='45' height='45' alt='Connect wallet' />
             Connect wallet to load your registered pages
           </Notification>
         )

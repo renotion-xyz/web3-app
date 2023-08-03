@@ -1,19 +1,14 @@
 import './style.css';
 import { Block, Box, Button, Form, Heading } from 'react-bulma-components';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
-import { useEffect, useState } from 'react';
-import { useAccount, useProvider, useSigner } from 'wagmi';
-import { getMinPrice, registerPage } from '../../web3/renotion';
+import { useCallback, useState } from 'react';
+import { usePublicClient, useWalletClient } from 'wagmi';
 import { pageIdFromUrl } from '../../utils';
-import { ethers, ContractTransaction } from 'ethers';
 import { useDomains } from '../../contexts/domains';
+import { useRenotionTokenMinPriceEth, useRenotionTokenRegister } from '../../web3/contracts';
+import { Address, formatEther, keccak256, toBytes } from 'viem';
 
-async function register(domain: string, pageUrl: string, price: string, signer: ethers.Signer): Promise<ContractTransaction> {
-  const page = pageIdFromUrl(pageUrl);
-  const tx = await registerPage(page, domain, price, signer);
-  return tx;
-}
-
+const RENOTION_CONTRACT = process.env.REACT_APP_RENOTION_CONTRACT as Address;
 const DOMAIN_REGEX = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/;
 const PAGE_REGEX = /^https:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\/[\w-]+(?:\w{32})$/;
 
@@ -28,7 +23,7 @@ interface RegisterProps {
   onFinished: () => void;
 }
 
-export default function Register (props: RegisterProps) {
+export default function Register ({ onFinished }: RegisterProps) {
   const [domain, setDomain] = useState<ValidatedInput>({
     value: '',
     isValid: false
@@ -38,22 +33,24 @@ export default function Register (props: RegisterProps) {
     help: 'Page should be publicly shared',
     isValid: false
   });
-  const [minPrice, setMinPrice] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const { setNeedsReloadDomains } = useDomains();
 
-  const provider = useProvider();
-  const { data: signer } = useSigner();
-  const { address } = useAccount();
+  const publicClient = usePublicClient();
+  const { data: walletClient } = useWalletClient();
   const addRecentTransaction = useAddRecentTransaction();
 
-  useEffect(() => {
-    getMinPrice(provider)
-      .then(setMinPrice);
-  }, [provider]);
+  const { writeAsync: registerPage } = useRenotionTokenRegister({
+    value: 0n,
+    address: RENOTION_CONTRACT,
+  });
 
-  function tryRegister() {
-    if (!signer || !address) {
+  const { data: minPrice } = useRenotionTokenMinPriceEth({
+    address: RENOTION_CONTRACT,
+  });
+
+  const tryRegister = useCallback(() => {
+    if (!walletClient || !minPrice) {
       alert('Wallet is not connected');
       return;
     }
@@ -68,21 +65,27 @@ export default function Register (props: RegisterProps) {
 
     setIsProcessing(true);
 
-    register(domain.value, page.value, minPrice, signer)
-      .then((tx) => {
+    registerPage({
+      value: minPrice,
+      args: [
+        keccak256(toBytes(domain.value)),
+        domain.value,
+        pageIdFromUrl(page.value)
+      ]
+    }).then((tx) => {
         addRecentTransaction({
-          hash: tx.hash!,
+          hash: tx.hash,
           description: 'Page registration',
           confirmations: 2
         });
-        return tx.wait(2);
+        return publicClient.waitForTransactionReceipt({ ...tx, confirmations: 2 });
       })
       .then(() => {
         setPage({ value: '', isValid: false });
         setDomain({ value: '', isValid: false });
         setIsProcessing(false);
-        setNeedsReloadDomains(address);
-        props.onFinished();
+        setNeedsReloadDomains(walletClient.account.address);
+        onFinished();
       })
       .catch((err) => {
         if (err.code !== 4001) { // rejected
@@ -90,7 +93,7 @@ export default function Register (props: RegisterProps) {
         }
         setIsProcessing(false);
       })
-  }
+  }, [walletClient, minPrice, domain.isValid, domain.value, page.isValid, page.value, registerPage, addRecentTransaction, publicClient, setNeedsReloadDomains, onFinished]);
 
   function onChangeDomain(event: React.ChangeEvent<HTMLInputElement>) {
     let { value } = event.target;
@@ -203,10 +206,9 @@ export default function Register (props: RegisterProps) {
           <b>Register</b>
         </Button>
         {
-          minPrice.length > 0
-          && (
+          minPrice !== undefined && (
             <span className='register-price'>
-              {minPrice} MATIC + gas fees
+              {formatEther(minPrice)} MATIC + gas fees
             </span>
           )
         }
