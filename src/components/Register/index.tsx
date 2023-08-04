@@ -2,11 +2,13 @@ import './style.css';
 import { Block, Box, Button, Form, Heading } from 'react-bulma-components';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useCallback, useState } from 'react';
-import { usePublicClient, useWalletClient } from 'wagmi';
-import { pageIdFromUrl } from '../../utils';
+import { useBalance, usePublicClient, useWalletClient } from 'wagmi';
+import { formatEtherPretty, pageIdFromUrl } from '../../utils';
 import { useDomains } from '../../contexts/domains';
 import { useRenotionTokenMinPriceEth, useRenotionTokenRegister } from '../../web3/contracts';
 import { Address, formatEther, keccak256, toBytes } from 'viem';
+import Link from '../Link';
+import useSignedUrl from '../../hooks/useSignedUrl';
 
 const RENOTION_CONTRACT = process.env.REACT_APP_RENOTION_CONTRACT as Address;
 const DOMAIN_REGEX = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/;
@@ -40,6 +42,8 @@ export default function Register ({ onFinished }: RegisterProps) {
   const { data: walletClient } = useWalletClient();
   const addRecentTransaction = useAddRecentTransaction();
 
+  const url = useSignedUrl(walletClient?.account.address);
+
   const { writeAsync: registerPage } = useRenotionTokenRegister({
     value: 0n,
     address: RENOTION_CONTRACT,
@@ -47,6 +51,11 @@ export default function Register ({ onFinished }: RegisterProps) {
 
   const { data: minPrice } = useRenotionTokenMinPriceEth({
     address: RENOTION_CONTRACT,
+  });
+
+  const { data: balance } = useBalance({
+    watch: true,
+    address: walletClient?.account.address,
   });
 
   const tryRegister = useCallback(() => {
@@ -197,6 +206,36 @@ export default function Register ({ onFinished }: RegisterProps) {
         }
       </Form.Field>
       <Block className='register-button-price-container'>
+        {
+          !!minPrice && (
+            <span>
+              Price:{' '}
+              <span className='register-price'>
+                {formatEther(minPrice)} MATIC + gas fees
+              </span>
+            </span>
+          )
+        }
+        {
+          !!balance && (
+            <Block className='register-balance-container' style={{marginBottom: 0}}>
+              <span>
+                Your balance:{' '}
+                <span className='register-price'>
+                  {formatEtherPretty(balance.value)} {balance.symbol}
+                </span>
+              </span>
+              {
+                !!url && (
+                  <Link
+                    url={url}
+                    title='Top up with MoonPay'
+                  />
+                )
+              }
+            </Block>
+          )
+        }
         <Button
           onClick={() => tryRegister()}
           disabled={!(domain.isValid && page.isValid) || isProcessing}
@@ -205,13 +244,6 @@ export default function Register ({ onFinished }: RegisterProps) {
         >
           <b>Register</b>
         </Button>
-        {
-          minPrice !== undefined && (
-            <span className='register-price'>
-              {formatEther(minPrice)} MATIC + gas fees
-            </span>
-          )
-        }
       </Block>
     </Box>
   );

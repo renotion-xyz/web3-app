@@ -1,3 +1,4 @@
+import { formatEther } from 'viem';
 import { OwnershipStatus, SSLVerificationStatus } from './types/domain';
 
 export function sslStatusInfo(status: SSLVerificationStatus): { color: string, text: string } {
@@ -51,4 +52,8 @@ export function shorten(text: string, maxLength: number = 12): string {
   } else {
     return `${text.slice(0, maxLength/2)}...${text.slice(-maxLength/2)}`;
   }
+}
+
+export function formatEtherPretty(value: bigint): string {
+  return parseFloat(formatEther(value)).toFixed(4);
 }

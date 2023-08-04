@@ -1,10 +1,17 @@
 .register-button-price-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .register-price {
   font-weight: 600;
+}
+
+.register-balance-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
 }

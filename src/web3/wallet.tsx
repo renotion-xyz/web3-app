@@ -2,7 +2,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig } from 'wagmi';
-import { polygon, polygonMumbai } from 'wagmi/chains';
+import { polygon } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -10,7 +10,7 @@ const ALCHEMY_KEY = process.env.REACT_APP_ALCHEMY_KEY;
 const WC_PROJECT_ID = process.env.REACT_APP_WC_PROJECT_ID;
 
 export const { chains, publicClient } = configureChains(
-  [polygon, polygonMumbai],
+  [polygon],
   [
     publicProvider(),
     alchemyProvider({ apiKey: ALCHEMY_KEY })
