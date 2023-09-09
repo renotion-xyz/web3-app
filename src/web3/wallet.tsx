@@ -6,8 +6,8 @@ import { polygon } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
-const ALCHEMY_KEY = process.env.REACT_APP_ALCHEMY_KEY;
-const WC_PROJECT_ID = process.env.REACT_APP_WC_PROJECT_ID;
+const ALCHEMY_KEY = import.meta.env.VITE_ALCHEMY_KEY;
+const WC_PROJECT_ID = import.meta.env.VITE_WC_PROJECT_ID;
 
 export const { chains, publicClient } = configureChains(
   [polygon],

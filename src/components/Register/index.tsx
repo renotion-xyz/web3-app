@@ -10,7 +10,7 @@ import { Address, formatEther, keccak256, toBytes } from 'viem';
 import Link from '../Link';
 import useSignedUrl from '../../hooks/useSignedUrl';
 
-const RENOTION_CONTRACT = process.env.REACT_APP_RENOTION_CONTRACT as Address;
+const RENOTION_CONTRACT = import.meta.env.VITE_RENOTION_CONTRACT as Address;
 const DOMAIN_REGEX = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/;
 const PAGE_REGEX = /^https:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\/[\w-]+(?:\w{32})$/;
 

@@ -1,7 +1,7 @@
 import { Domain } from './types/domain';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const NODE_ENV = process.env.NODE_ENV;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const NODE_ENV = import.meta.env.NODE_ENV;
 
 export async function listAllDomains(account: string): Promise<Domain[]> {
   const url = `${API_BASE_URL}/domains/${account}`;
