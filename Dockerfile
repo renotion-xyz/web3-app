@@ -16,8 +16,8 @@ RUN npm run build
 FROM node:18-slim
 
 WORKDIR /app
-COPY --from=build /app/build /app/build
+COPY --from=build /app/dist /app/dist
 
 RUN npm install -g serve
 
-CMD ["serve", "-s", "/app/build", "-l", "8080"]
+CMD ["serve", "-s", "/app/dist", "-l", "8080"]
